@@ -212,10 +212,20 @@ RSpec.describe '/accounts', type: :request do
         expect { path_update }.not_to change(account, :name)
       end
 
-      it 'renders a JSON response with errors for the account' do
+      it 'renders a JSON response with errors' do
         path_update
 
         expect(response).to have_http_status(:unprocessable_entity)
+        expect(body).to eq(
+          'errors' => [
+            {
+              'source' => {
+                'pointer' => '/data/attributes/name'
+              },
+              'detail' => "can't be blank"
+            }
+          ]
+        )
       end
     end
   end

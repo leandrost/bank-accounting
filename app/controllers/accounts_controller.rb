@@ -21,11 +21,7 @@ class AccountsController < ApplicationController
     if account.save
       render json: account, status: :created
     else
-      render(
-        json: account,
-        status: :unprocessable_entity,
-        serializer: ActiveModel::Serializer::ErrorSerializer
-      )
+      render_json_errors_for(account)
     end
   end
 
@@ -34,7 +30,7 @@ class AccountsController < ApplicationController
     if account.update(account_params)
       render json: account
     else
-      render json: account.errors, status: :unprocessable_entity
+      render_json_errors_for(account)
     end
   end
 
