@@ -23,7 +23,7 @@ gem 'puma', '~> 4.1'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
 
-gem 'fast_jsonapi', '~> 1.5'
+gem 'active_model_serializers', '~> 0.10.10'
 gem 'jsonapi_parameters', '~> 2.0'
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS),

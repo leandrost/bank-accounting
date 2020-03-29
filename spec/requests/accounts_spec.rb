@@ -56,17 +56,17 @@ RSpec.describe '/accounts', type: :request do
       get accounts_url, headers: valid_headers, as: :json
 
       expect(response).to be_successful
-      expect(body).to eq [
-        {
-          'data' => {
+      expect(body).to eq(
+        'data' => [
+          {
             'id' => account.id.to_s,
-            'type' => 'account',
+            'type' => 'accounts',
             'attributes' => {
               'name' => expected_name
             }
           }
-        }
-      ]
+        ]
+      )
     end
   end
 
@@ -80,7 +80,7 @@ RSpec.describe '/accounts', type: :request do
       expect(body).to eq(
         'data' => {
           'id' => account.id.to_s,
-          'type' => 'account',
+          'type' => 'accounts',
           'attributes' => {
             'name' => expected_name
           }
@@ -112,7 +112,7 @@ RSpec.describe '/accounts', type: :request do
         expect(body).to eq(
           'data' => {
             'id' => account.id.to_s,
-            'type' => 'account',
+            'type' => 'accounts',
             'attributes' => {
               'name' => account.name
             }
@@ -134,10 +134,20 @@ RSpec.describe '/accounts', type: :request do
         expect { post_create }.to change(Account, :count).by(0)
       end
 
-      it 'renders a JSON response with errors for the new account' do
+      it 'renders a JSON response with errors' do
         post_create
 
         expect(response).to have_http_status(:unprocessable_entity)
+        expect(body).to eq(
+          'errors' => [
+            {
+              'source' => {
+                'pointer' => '/data/attributes/name'
+              },
+              'detail' => "can't be blank"
+            }
+          ]
+        )
       end
     end
   end
@@ -154,10 +164,10 @@ RSpec.describe '/accounts', type: :request do
 
       let(:valid_params) do
         {
-          'data': {
-            'type': 'account',
-            'attributes': {
-              'name': new_name
+          data: {
+            type: 'accounts',
+            attributes: {
+              name: new_name
             }
           }
         }
@@ -180,7 +190,7 @@ RSpec.describe '/accounts', type: :request do
         expect(body).to eq(
           'data' => {
             'id' => account.id.to_s,
-            'type' => 'account',
+            'type' => 'accounts',
             'attributes' => {
               'name' => new_name
             }
