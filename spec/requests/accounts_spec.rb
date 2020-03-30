@@ -62,7 +62,8 @@ RSpec.describe '/accounts', type: :request do
             'id' => account.id.to_s,
             'type' => 'accounts',
             'attributes' => {
-              'name' => expected_name
+              'name' => expected_name,
+              'balance' => '0.0'
             }
           }
         ]
@@ -82,7 +83,8 @@ RSpec.describe '/accounts', type: :request do
           'id' => account.id.to_s,
           'type' => 'accounts',
           'attributes' => {
-            'name' => expected_name
+            'name' => expected_name,
+            'balance' => '0.0'
           }
         }
       )
@@ -91,11 +93,12 @@ RSpec.describe '/accounts', type: :request do
 
   describe 'POST /create' do
     subject(:post_create) do
-      post accounts_url, {
+      post(
+        accounts_url,
         params: valid_params,
         headers: valid_headers,
         as: :json
-      }
+      )
     end
 
     context 'with valid parameters' do
@@ -114,20 +117,33 @@ RSpec.describe '/accounts', type: :request do
             'id' => account.id.to_s,
             'type' => 'accounts',
             'attributes' => {
-              'name' => account.name
+              'name' => account.name,
+              'balance' => '0.0'
             }
           }
         )
       end
     end
 
+    context 'with balance' do
+      before :each do
+        valid_params[:data][:attributes][:balance] = 100
+      end
+
+      it 'creates a new Account with balance' do
+        expect { post_create }.to change(Account, :count).by(1)
+        expect(Account.last.balance).to eq(100)
+      end
+    end
+
     context 'with invalid parameters' do
       subject(:post_create) do
-        post accounts_url, {
+        post(
+          accounts_url,
           params: invalid_params,
           headers: valid_headers,
           as: :json
-        }
+        )
       end
 
       it 'does not create a new Account' do
@@ -192,7 +208,8 @@ RSpec.describe '/accounts', type: :request do
             'id' => account.id.to_s,
             'type' => 'accounts',
             'attributes' => {
-              'name' => new_name
+              'name' => new_name,
+              'balance' => '0.0'
             }
           }
         )

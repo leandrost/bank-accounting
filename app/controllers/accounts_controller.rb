@@ -48,6 +48,6 @@ class AccountsController < ApplicationController
   end
 
   def account_params
-    params.from_jsonapi.require(:account).permit(:name)
+    params.from_jsonapi.require(:account).permit(:name, :balance)
   end
 end
