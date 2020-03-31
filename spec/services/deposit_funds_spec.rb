@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe WithdrawFunds do
+describe DepositFunds do
   describe '.run!' do
     subject(:run_service) do
       described_class.run!(account: account, amount: amount)
@@ -15,24 +15,14 @@ describe WithdrawFunds do
       allow(account).to receive(:save).and_return(true)
     end
 
-    it 'removes amount from account balance' do
+    it 'adds amount from account balance' do
       run_service
-      expect(account.balance).to eq 150
+      expect(account.balance).to eq 250
     end
 
     it 'saves account' do
       run_service
       expect(account).to have_received(:save)
-    end
-
-    context 'when balance is less than amount' do
-      let(:account) { Account.new(balance: 200) }
-      let(:amount) { 450 }
-
-      it 'does not changes balance' do
-        run_service
-        expect(account.balance).to eq 200
-      end
     end
   end
 end

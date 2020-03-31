@@ -7,14 +7,12 @@ class TransferFunds < ApplicationService
   attribute :amount, :amount
 
   def execute
-    withdrawal = WithdrawFunds.run!(account: source_account, amount: amount)
-    return failure(transfer, withdrawal.result) if withdrawal.failure?
+    ActiveRecord::Base.transaction do
+      compose(WithdrawFunds, account: source_account, amount: amount)
+      compose(DepositFunds, account: destination_account, amount: amount)
 
-    transfer.destination_account.balance += transfer.amount
-    transfer.destination_account.save!
-
-    transfer.save
-
+      transfer.save!
+    end
     transfer
   end
 
@@ -26,16 +24,22 @@ class TransferFunds < ApplicationService
     )
   end
 
-  def failure(transfer, service_result)
-    transfer.errors.merge!(service_result.errors)
-    transfer
+  def compose(service_klass, **args)
+    service = service_klass.run!(args)
+
+    if service.failure?
+      transfer.errors.merge!(service.result.errors)
+      raise ActiveRecord::Rollback
+    end
+
+    service.result
   end
 
   def source_account
-    @source_account ||= Account.find(source_account_id)
+    @source_account ||= Account.find_by(id: source_account_id)
   end
 
   def destination_account
-    @destination_account ||= Account.find(destination_account_id)
+    @destination_account ||= Account.find_by(id: destination_account_id)
   end
 end

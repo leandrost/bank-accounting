@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Exchanges an amount from one account to another
+# Takes the specified amount from account balance
 class WithdrawFunds < ApplicationService
   attribute :account
   attribute :amount, :amount
