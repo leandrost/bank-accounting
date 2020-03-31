@@ -25,7 +25,7 @@ bin/setup
 
 2. Run the application:
 ```
-bin/rails start
+bin/rails server
 ```
 
 ## Tests
