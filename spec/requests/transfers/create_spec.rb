@@ -68,4 +68,48 @@ RSpec.describe 'POST /transfers', type: :request do
     expect(transfer.source_account.balance).to eq(958.42)
     expect(transfer.destination_account.balance).to eq(42)
   end
+
+  context 'when source_account funds are insufficient' do
+    let(:account1) { Account.create!(name: 'Account 1', balance: orignal_balance1) }
+    let(:account2) { Account.create!(name: 'Account 2', balance: orignal_balance2) }
+
+    let(:orignal_balance1) { 100 }
+    let(:orignal_balance2) { 0 }
+
+    let(:valid_params) do
+      {
+        data: {
+          type: 'transfers',
+          attributes: {
+            source_account_id: account1.id,
+            destination_account_id: account2.id,
+            amount: 442
+          }
+        }
+      }
+    end
+
+    it 'cancels transfer' do
+      expect { post_create }.not_to change(Transfer, :count)
+
+      expect(account1.reload.balance).to eq(orignal_balance1)
+      expect(account2.reload.balance).to eq(orignal_balance2)
+    end
+
+    it 'renders a JSON response with errors' do
+      post_create
+
+      expect(response).to have_http_status(:unprocessable_entity)
+      expect(body).to eq(
+        'errors' => [
+          {
+            'source' => {
+              'pointer' => '/data/attributes/base'
+            },
+            'detail' => 'insufficient funds'
+          }
+        ]
+      )
+    end
+  end
 end

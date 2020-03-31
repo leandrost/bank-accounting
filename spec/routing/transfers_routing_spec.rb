@@ -16,11 +16,11 @@ RSpec.describe TransfersController, type: :routing do
     end
 
     it "routes to #update via PUT" do
-      expect(put: "/transfers/1").to route_to("transfers#update", id: "1")
+      expect(put: "/transfers/1").not_to route_to("transfers#update", id: "1")
     end
 
     it "routes to #update via PATCH" do
-      expect(patch: "/transfers/1").to route_to("transfers#update", id: "1")
+      expect(patch: "/transfers/1").not_to route_to("transfers#update", id: "1")
     end
 
     it "routes to #destroy" do

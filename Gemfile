@@ -35,6 +35,7 @@ group :development, :test do
   # get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'rspec-rails', '~> 4.0'
+  gem 'pry-byebug'
 end
 
 group :development do

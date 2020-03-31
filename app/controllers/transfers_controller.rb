@@ -5,19 +5,19 @@ class TransfersController < ApplicationController
 
   # GET /transfers
   def index
-    @transfers = Transfer.all
+    transfers = Transfer.all
 
-    render json: @transfers
+    render json: transfers
   end
 
   # GET /transfers/1
   def show
-    render json: @transfer
+    render json: transfer
   end
 
   # POST /transfers
   def create
-    operation = CreateTransfer.run!(transfer_params)
+    operation = TransferFunds.run!(transfer_params)
 
     if operation.success?
       render json: operation.result, status: :created
@@ -26,28 +26,19 @@ class TransfersController < ApplicationController
     end
   end
 
-  # PATCH/PUT /transfers/1
-  def update
-    if @transfer.update(transfer_params)
-      render json: @transfer
-    else
-      render json: @transfer.errors, status: :unprocessable_entity
-    end
-  end
-
   # DELETE /transfers/1
   def destroy
-    @transfer.destroy
+    transfer.destroy
   end
 
   private
 
-  # Use callbacks to share common setup or constraints between actions.
+  attr_accessor :transfer
+
   def set_transfer
-    @transfer = Transfer.find(params[:id])
+    self.transfer = Transfer.find(params[:id])
   end
 
-  # Only allow a trusted parameter "white list" through.
   def transfer_params
     params.from_jsonapi.require(:transfer).permit(
       :source_account_id,
