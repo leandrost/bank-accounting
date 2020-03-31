@@ -23,7 +23,12 @@ bundle config --local path vendor # optional - config bundler to locally install
 bin/setup
 ```
 
-2. Run the application:
+3. Seed the database:
+```
+bin/rails db:seed
+```
+
+4. Run the application:
 ```
 bin/rails server
 ```
