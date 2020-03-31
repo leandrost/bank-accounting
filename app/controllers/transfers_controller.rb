@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class TransfersController < ApplicationController
-  before_action :set_transfer, only: %i[show update destroy]
-
   # GET /transfers
   def index
     transfers = Transfer.all
@@ -12,6 +10,7 @@ class TransfersController < ApplicationController
 
   # GET /transfers/1
   def show
+    transfer = Transfer.find(params[:id])
     render json: transfer
   end
 
@@ -26,18 +25,7 @@ class TransfersController < ApplicationController
     end
   end
 
-  # DELETE /transfers/1
-  def destroy
-    transfer.destroy
-  end
-
   private
-
-  attr_accessor :transfer
-
-  def set_transfer
-    self.transfer = Transfer.find(params[:id])
-  end
 
   def transfer_params
     params.from_jsonapi.require(:transfer).permit(
