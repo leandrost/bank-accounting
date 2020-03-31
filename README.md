@@ -14,16 +14,23 @@ Bank Accounting transfers mananger API excercise using [json:api specification](
 1. Clone this repo:
 ```
 git clone git@github.com:leandrost/bank-accounting.git
+cd bank-accounting
 ```
+
 2. Setup the application:
 ```
 bin/setup
 ```
 
+2. Run the application:
+```
+bin/rails start
+```
+
 ## Tests
 
 ```
-bundle exec rspec
+bin/rspec
 ```
 
 ## Deploy
