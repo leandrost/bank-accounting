@@ -7,6 +7,8 @@ class TransferFunds < ApplicationService
   attribute :amount, :amount
 
   def execute
+    return transfer if account_errors?
+
     ActiveRecord::Base.transaction do
       compose(WithdrawFunds, account: source_account, amount: amount)
       compose(DepositFunds, account: destination_account, amount: amount)
@@ -14,6 +16,19 @@ class TransferFunds < ApplicationService
       transfer.save!
     end
     transfer
+  end
+
+  private
+
+  def account_errors?
+    add_account_error(:source_account_id) if source_account.blank?
+    add_account_error(:destination_account_id) if destination_account.blank?
+
+    transfer.errors.present?
+  end
+
+  def add_account_error(attr_name)
+    transfer.errors.add(attr_name, 'account not found')
   end
 
   def transfer

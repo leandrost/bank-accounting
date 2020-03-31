@@ -112,4 +112,41 @@ RSpec.describe 'POST /transfers', type: :request do
       )
     end
   end
+
+  context 'with inexistent accounts' do
+    let(:valid_params) do
+      {
+        data: {
+          type: 'transfers',
+          attributes: {
+            source_account_id: 171,
+            destination_account_id: 22,
+            amount: 442
+          }
+        }
+      }
+    end
+
+    it 'renders a JSON response with errors' do
+      post_create
+
+      expect(response).to have_http_status(:unprocessable_entity)
+      expect(body).to eq(
+        'errors' => [
+          {
+            'source' => {
+              'pointer' => '/data/attributes/source-account-id'
+            },
+            'detail' => 'account not found'
+          },
+          {
+            'source' => {
+              'pointer' => '/data/attributes/destination-account-id'
+            },
+            'detail' => 'account not found'
+          }
+        ]
+      )
+    end
+  end
 end
