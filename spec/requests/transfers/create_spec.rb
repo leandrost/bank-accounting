@@ -149,4 +149,35 @@ RSpec.describe 'POST /transfers', type: :request do
       )
     end
   end
+
+  context 'when source and destination are the same' do
+    let(:valid_params) do
+      {
+        data: {
+          type: 'transfers',
+          attributes: {
+            source_account_id: account1.id,
+            destination_account_id: account1.id,
+            amount: 442
+          }
+        }
+      }
+    end
+
+    it 'renders a JSON response with errors' do
+      post_create
+
+      expect(response).to have_http_status(:unprocessable_entity)
+      expect(body).to eq(
+        'errors' => [
+          {
+            'source' => {
+              'pointer' => '/data/attributes/base'
+            },
+            'detail' => 'cannot transfer to the same account'
+          },
+        ]
+      )
+    end
+  end
 end

@@ -7,7 +7,7 @@ class TransferFunds < ApplicationService
   attribute :amount, :amount
 
   def execute
-    return transfer if account_errors?
+    return transfer if accounts_not_exists? || accounts_not_same?
 
     ActiveRecord::Base.transaction do
       compose(WithdrawFunds, account: source_account, amount: amount)
@@ -20,7 +20,7 @@ class TransferFunds < ApplicationService
 
   private
 
-  def account_errors?
+  def accounts_not_exists?
     add_account_error(:source_account_id) if source_account.blank?
     add_account_error(:destination_account_id) if destination_account.blank?
 
@@ -29,6 +29,15 @@ class TransferFunds < ApplicationService
 
   def add_account_error(attr_name)
     transfer.errors.add(attr_name, 'account not found')
+  end
+
+  def accounts_not_same?
+    message = 'cannot transfer to the same account'
+    transfer.errors.add(:base, message) if source_account == destination_account
+    transfer.errors.present?
+  end
+
+  def same_account?
   end
 
   def transfer
