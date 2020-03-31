@@ -19,6 +19,7 @@ cd bank-accounting
 
 2. Setup the application:
 ```
+bundle config --local path vendor # optional - config bundler to locally install gems on ./vendor
 bin/setup
 ```
 

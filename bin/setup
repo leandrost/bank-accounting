@@ -20,7 +20,7 @@ FileUtils.chdir APP_ROOT do
   system('bundle check') || system!('bundle install')
 
   puts '\n== Copying sample files =='
-  FileUtils.cp '.env.sample', '.env' unless File.exist?('.env.sample')
+  FileUtils.cp '.env.sample', '.env' unless File.exist?('.env')
 
   puts '\n== Preparing database =='
   system! 'bin/rails db:prepare'
