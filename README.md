@@ -1,24 +1,46 @@
-# README
+# Bank Accounting [![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Bank Accounting transfers mananger API excercise using [json:api specification](https://jsonapi.org/)
 
-Things you may want to cover:
+# Requirements
 
-* Ruby version
+Ruby 2.7
+Postgres 12
 
-* System dependencies
+# Getting started
 
-* Configuration
+1. Clone this repo:
+```
+git clone git@github.com:leandrost/bank-accounting.git
+```
+2. Setup the application:
+```
+bin/setup
+```
 
-* Database creation
+# Tests
 
-* Database initialization
+```
+bundle exec rspec
+```
 
-* How to run the test suite
+# Deploy
 
-* Services (job queues, cache servers, search engines, etc.)
+```
+git push heroku master
+```
 
-* Deployment instructions
+# Usage
 
-* ...
+TODO
+
+# Contributing
+
+1. Fork it
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Added some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create new Pull Request
+
+# TODO
+
