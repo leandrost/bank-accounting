@@ -4,6 +4,8 @@ class ApplicationService
   include ActiveModel::Model
   include ActiveModel::Attributes
 
+  ActiveModel::Type.register(:amount, AmountType)
+
   attr_accessor :result
 
   def self.run!(args)

@@ -8,3 +8,4 @@ class AmountType < ActiveRecord::Type::Decimal
     super(value)
   end
 end
+
