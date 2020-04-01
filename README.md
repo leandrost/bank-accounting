@@ -2,7 +2,7 @@
 [![forthebadge](https://forthebadge.com/images/badges/made-with-ruby.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
 
-Bank Accounting transfers mananger API excercise using [json:api specification](https://jsonapi.org/)
+Bank Accounting transfers manager API exercise using [json:api specification](https://jsonapi.org/)
 
 ## Requirements
 
@@ -55,7 +55,7 @@ git push heroku master
 
 ## Usage
 
-TODO
+https://documenter.getpostman.com/view/10922429/SzYYzyQd?version=latest
 
 ## Contributing
 
@@ -67,6 +67,7 @@ TODO
 
 ## TODO
 
+- Add User Authentication
 - Add timestamps into API responses
-- Include relatioships on some responses
+- Include relationships on some responses
 
